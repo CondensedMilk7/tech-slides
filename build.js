@@ -27,6 +27,7 @@ fs.writeFileSync(
   path.join(BUILD_CONFIG.outputDir, "index.html"),
   indexTemplate,
 );
+fs.cpSync("favicon.ico", path.join(BUILD_CONFIG.outputDir, "favicon.ico"));
 
 entries.forEach((entry) => {
   console.log("🔨 Building", entry);
