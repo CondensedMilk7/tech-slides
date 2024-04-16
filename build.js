@@ -27,7 +27,10 @@ fs.writeFileSync(
   path.join(BUILD_CONFIG.outputDir, "index.html"),
   indexTemplate,
 );
-fs.cpSync("favicon.ico", path.join(BUILD_CONFIG.outputDir, "favicon.ico"));
+
+if (BUILD_CONFIG.favicon) {
+  fs.cpSync("favicon.ico", path.join(BUILD_CONFIG.outputDir, "favicon.ico"));
+}
 
 entries.forEach((entry) => {
   console.log("🔨 Building", entry);
@@ -50,7 +53,22 @@ entries.forEach((entry) => {
   );
 
   const redirectsPath = path.join(BUILD_CONFIG.outputDir, "_redirects");
-  fs.appendFileSync(redirectsPath,  redirectsLine, "utf-8");
+  fs.appendFileSync(redirectsPath, redirectsLine, "utf-8");
+
+  // Add custom favicon to the slide page
+  if (BUILD_CONFIG.favicon) {
+    const indexFilePath = path.join(outputPath, "index.html");
+    const indexFile = fs.readFileSync(indexFilePath, "utf-8");
+
+    const defaultFaviconTag = /^.*<link rel="icon".*/gim
+    const customFaviconTag = `<link rel="icon" href="/${BUILD_CONFIG.favicon}">`;
+
+    fs.writeFileSync(
+      indexFilePath,
+      indexFile.replace(defaultFaviconTag, customFaviconTag),
+      "utf-8",
+    );
+  }
 
   console.log("✅ Finished", entry, "\n");
 });
