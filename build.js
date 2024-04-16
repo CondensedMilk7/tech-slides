@@ -32,17 +32,26 @@ fs.cpSync("favicon.ico", path.join(BUILD_CONFIG.outputDir, "favicon.ico"));
 entries.forEach((entry) => {
   console.log("🔨 Building", entry);
   const entryPath = path.join(BUILD_CONFIG.inputDir, entry);
+  const outputPath = path.join(BUILD_CONFIG.outputDir, entry);
 
   execSync(
     `npm run slidev -- build --entry="${entryPath}/slides.md" --base="/${entry}/"`,
   );
 
   // Dist files can only be generated inside the entry folder,
-  // so we move it to the global dist path
-  fs.renameSync(
-    path.join(entryPath, "dist"),
-    path.join(BUILD_CONFIG.outputDir, entry),
+  // so we move it to the global output directory
+  fs.renameSync(path.join(entryPath, "dist"), outputPath);
+
+  // Generate netlify _redirects rule for each entry
+  // and put them in one file
+  const redirectsLine = fs.readFileSync(
+    path.join(outputPath, "_redirects"),
+    "utf-8",
   );
+
+  const redirectsPath = path.join(BUILD_CONFIG.outputDir, "_redirects");
+  fs.appendFileSync(redirectsPath,  redirectsLine, "utf-8");
+
   console.log("✅ Finished", entry, "\n");
 });
 
