@@ -219,7 +219,7 @@ DI სისტემის ორი როლი:
 
 ---
 
-# dependency-ების მიწოდება
+# Dependency-ების მიწოდება
 
 `@Injectable` დეკორატორი კონფიგურაციას უკეთებს კლასს, რომელიც შეგვიძლია **დავაინჯექთოთ**
 სხვა კლასში.
@@ -229,7 +229,7 @@ DI სისტემის ორი როლი:
 @Injectable()
 export class FoodService {
   getFood() {
-    return "Piping hot Khinkali!"
+    return "Piping hot Khinkali!";
   }
 }
 ```
@@ -256,14 +256,15 @@ export class FoodService {
 class FoodService {}
 ```
 
-კომპონენტის დონეზე. უნიკალური სერვისის ინსტანცია კომპონენტისთვის (და პოტენციურად მისი შვილებისთვის):
+კომპონენტის დონეზე. უნიკალური სერვისის ინსტანცია კომპონენტისთვის (და პოტენციურად მისი შვილებისთვის).
+ყველა `FoodListComponent`-ის ინსტანციას თავისი `FoodService`-ის ინსტანცია ექნება:
 
 ```ts {5}
 @Component({
   standalone: true,
   selector: 'app-food-list',
   template: '...',
-  providers: [FoodService]
+  providers: [FoodService] 
 })
 class FoodListComponent {}
 ```
@@ -320,6 +321,39 @@ graph TD;
     componentConstructor["Component\nconstructor(FoodService)"]
     foodService --> componentConstructor
 style componentConstructor text-align: left
+```
+
+---
+
+# პროვაიდერების ჩანაცვლება
+
+მოთხოვნილი dependency-ის მაგივრად შეგვიძლია მივაწოდოთ რაიმე სხვა:
+
+```ts
+@Injectable({ providedIn: "root" })
+export class ChineseFoodService {
+  getFood() {
+    return "Inferior chinese dumplings that look like khinkali"
+  }
+}
+```
+
+
+```ts
+@Component({
+  providers: [
+    {
+      provide: FoodService,
+      useClass: ChineseFoodService
+    }
+  ]
+})
+export class FoodListComponent {
+  constructor(private foodService: FoodService) {}
+  deliverFood() {
+    this.foodService.getFood(); // სინამდვილეში არის ChineseFoodService.getFood()
+  }
+}
 ```
 
 ---
