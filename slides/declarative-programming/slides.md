@@ -127,7 +127,7 @@ class ChartComponent {
 ```
 
 ```html
-<chart [data]="chartData"></chart>
+<chart [data]="chartData$ | async"></chart>
 ```
 
 ::right::
