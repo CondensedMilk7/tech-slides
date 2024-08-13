@@ -227,8 +227,8 @@ Declarative
 
 ```ts
 class ChartComponent {
-  selectedTimeline = new BehaviorSubject('1M');
-  chartData$ = this.selectedtimeline.pipe(
+  selectedTimeline$ = new BehaviorSubject('1M');
+  chartData$ = this.selectedTimeline$.pipe(
     switchMap(
       (timeline) => this.fetchFromServer(timeline)
     )
