@@ -250,6 +250,8 @@ class ChartComponent {
 - Declarative programming is possible only on the higher level of programming
 - There is no 100% declarative code 
 - All code is imperative at a lower level
+- RxJS or signals don't automatically mean declarative
+- Don't overuse it!
 
 ---
 
