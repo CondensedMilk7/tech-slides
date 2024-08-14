@@ -271,3 +271,10 @@ image: "/frieren-ng-guide.webp"
 Thank you...
 
 </div>
+
+---
+
+# Nice Resources
+
+- [Joshua Morony](https://www.youtube.com/playlist?list=PLvLBrJpVwC7oDMei6JYcySgH1hMBZti_a)
+- [Code Like a Human](https://www.youtube.com/watch?v=E7Fbf7R3x6I)
